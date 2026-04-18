@@ -33,7 +33,7 @@ export default function LoginScreen() {
 
       Alert.alert("Success", "Login successful!");
 
-      router.replace("/indexh");
+      router.replace("/checkinmiddle");
     } else {
       Alert.alert("Error", res?.message || "Incorrect email or password");
     }
