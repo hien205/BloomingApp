@@ -12,7 +12,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 
-export default function App() {
+export default function CalmtimeScreen() {
   const router = useRouter();
   const [note, setNote] = useState("");
   const [selected, setSelected] = useState("10 min");

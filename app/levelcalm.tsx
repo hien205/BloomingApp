@@ -11,7 +11,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 
-export default function HomeScreen() {
+export default function LevelcalmScreen() {
   const router = useRouter();
   const [selected, setSelected] = useState("Beginner");
 
@@ -59,7 +59,7 @@ export default function HomeScreen() {
         >
           <Text style={styles.optionTitle}>Beginner</Text>
           <Text style={styles.optionDescription}>
-            I don't know how to meditate yet.
+           I do not know how to meditate yet.
           </Text>
         </TouchableOpacity>
 
@@ -80,7 +80,7 @@ export default function HomeScreen() {
         {/* CONTINUE */}
         <TouchableOpacity
           style={styles.button2}
-          onPress={() => router.push("/levelcalm")}
+          onPress={() => router.replace("/calmhome")}
         >
           <Text style={styles.text6}>Continue</Text>
         </TouchableOpacity>

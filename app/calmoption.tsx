@@ -11,7 +11,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
 
-export default function HomeScreen() {
+export default function CalmoptionScreen() {
   const router = useRouter();
 
   return (

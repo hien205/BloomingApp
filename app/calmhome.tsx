@@ -1,4 +1,4 @@
-import React from "react";
+
 import {
   View,
   ScrollView,
@@ -10,29 +10,66 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
+import { useFocusEffect } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useState, useCallback } from "react";
 
-export default function HomeScreen() {
+export default function CalmhomeScreen() {
   const router = useRouter();
+
+  const [name, setName] = useState("User");
+const [avatar, setAvatar] = useState("");
+
+useFocusEffect(
+  useCallback(() => {
+    const loadData = async () => {
+      const savedName = await AsyncStorage.getItem("username");
+      const savedAvatar = await AsyncStorage.getItem("avatar");
+
+      if (savedName) setName(savedName);
+      if (savedAvatar) setAvatar(savedAvatar);
+    };
+
+    loadData();
+  }, [])
+);
 
   return (
     <SafeAreaView style={styles.container}>
 
       <ScrollView style={styles.scrollView} contentContainerStyle={{ paddingBottom: 90 }}>
 
-        {/* HEADER */}
-        <View style={styles.header}>
-          <View>
-            <Text style={styles.smallText}>Hi Saad Shaikh!!</Text>
-            <Text style={styles.title}>Good Morning</Text>
-          </View>
+        <View style={styles.row}>
 
-          <Image
-            source={{
-              uri: "https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/d03ead34-ea72-4551-9dbc-a4bc3f505913",
-            }}
-            style={styles.avatar}
-          />
-        </View>
+  {/* LEFT */}
+  <TouchableOpacity onPress={() => router.back()}>
+    <Image
+      source={{
+        uri: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/s6ZJwwxffE/phk9o67e_expires_30_days.png"
+      }}
+      style={styles.image}
+      resizeMode="stretch"
+    />
+  </TouchableOpacity>
+
+  {/* CENTER TEXT */}
+  <View style={styles.headerCenter}>
+    <Text style={styles.text}>
+                       {"Hi " + name + " !!"}
+                    </Text>
+    <Text style={styles.text2}>
+      Good Morning
+    </Text>
+  </View>
+
+  {/* RIGHT */}
+  <Image
+     source={{ uri: avatar || "https://via.placeholder.com/40" }}
+    style={styles.image}
+    resizeMode="stretch"
+  />
+
+</View>
 
         {/* CATEGORY */}
         <View style={styles.categoryBox}>
@@ -44,10 +81,20 @@ export default function HomeScreen() {
             imageStyle={{ borderRadius: 20 }}
           >
             <View style={styles.rowCategory}>
-              <Text style={styles.tag}>Well-being</Text>
-              <Text style={styles.tag}>Nourishment</Text>
-              <Text style={styles.tag}>Rest</Text>
-              <Text style={styles.tagActive}>Calm</Text>
+              <TouchableOpacity onPress={() => router.replace("/indexhome")}>
+                 <Text style={styles.tag}>Well-being</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => router.replace("/nourishment")}>
+                 <Text style={styles.tag}>Nourishment</Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => router.replace("/rest")}>
+                 <Text style={styles.tag}>Rest</Text>
+              </TouchableOpacity>
+              
+                 <Text style={styles.tagActive}>Calm</Text>
+            
+              
+              
             </View>
           </ImageBackground>
 
@@ -106,41 +153,42 @@ export default function HomeScreen() {
       </ScrollView>
 
       {/* BOTTOM NAV */}
-      <View style={styles.bottomNav}>
+      <View style={{
+  backgroundColor: "#FFFFFF",
+  paddingVertical: 12,
+  borderTopWidth: 1,
+  borderTopColor: "#F0F0F0",
+}}>
+  <View style={{
+    flexDirection: "row",
+    justifyContent: "space-around",
+    alignItems: "center",
+  }}>
+    <TouchableOpacity onPress={() => router.push("/indexhome")} style={{ alignItems: "center" }}>
+      <Image source={{uri: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/s6ZJwwxffE/0e1y69h4_expires_30_days.png"}}
+        resizeMode="stretch" style={{ width: 24, height: 24, marginBottom: 4 }} />
+      <Text style={{ color: "#F48BA1", fontSize: 10, fontWeight: "bold" }}>Health</Text>
+    </TouchableOpacity>
 
-        <View style={styles.navItem}>
-          <Image
-            source={{ uri: "https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/ff2360e5-5549-4f97-b508-fce2ebc4e352" }}
-            style={[styles.icon, { tintColor: "#F48BA1" }]}
-          />
-          <Text style={styles.navActive}>Health</Text>
-        </View>
+    <TouchableOpacity onPress={() => router.push("/journaling")} style={{ alignItems: "center" }}>
+      <Image source={{uri: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/s6ZJwwxffE/qglghqbr_expires_30_days.png"}}
+        resizeMode="stretch" style={{ width: 24, height: 24, marginBottom: 4 }} />
+      <Text style={{ color: "#9E9E9E", fontSize: 10 }}>Expression</Text>
+    </TouchableOpacity>
 
-        <View style={styles.navItem}>
-          <Image
-            source={{ uri: "https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/2cdb61e5-f361-431d-b9f9-6279c0d4d807" }}
-            style={styles.icon}
-          />
-          <Text style={styles.navText}>Expression</Text>
-        </View>
+    <TouchableOpacity onPress={() => router.push("/AISchedule")} style={{ alignItems: "center" }}>
+      <Image source={{uri: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/s6ZJwwxffE/ndb4dzls_expires_30_days.png"}}
+        resizeMode="stretch" style={{ width: 24, height: 24, marginBottom: 4 }} />
+      <Text style={{ color: "#9E9E9E", fontSize: 10 }}>Appointments</Text>
+    </TouchableOpacity>
 
-        <View style={styles.navItem}>
-          <Image
-            source={{ uri: "https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/156e4cd4-e571-4305-9ade-6147301bf08d" }}
-            style={styles.icon}
-          />
-          <Text style={styles.navText}>Appointments</Text>
-        </View>
-
-        <View style={styles.navItem}>
-          <Image
-            source={{ uri: "https://figma-alpha-api.s3.us-west-2.amazonaws.com/images/e297ea8b-a200-43f4-a2c9-78037ba3f10c" }}
-            style={styles.icon}
-          />
-          <Text style={styles.navText}>Profile</Text>
-        </View>
-
-      </View>
+    <TouchableOpacity onPress={() => router.push("/profile-user")} style={{ alignItems: "center" }}>
+      <Image source={{uri: "https://storage.googleapis.com/tagjs-prod.appspot.com/v1/s6ZJwwxffE/45638hlp_expires_30_days.png"}}
+        resizeMode="stretch" style={{ width: 24, height: 24, marginBottom: 4 }} />
+      <Text style={{ color: "#9E9E9E", fontSize: 10 }}>Profile</Text>
+    </TouchableOpacity>
+  </View>
+</View>
 
     </SafeAreaView>
   );
@@ -162,7 +210,7 @@ const styles = StyleSheet.create({
 
   avatar: { width: 40, height: 40, borderRadius: 20 },
 
-  categoryBox: { marginHorizontal: 15 },
+  categoryBox: { marginHorizontal: 15,marginTop: 20 },
 
   categoryBg: { padding: 15 },
 
@@ -191,11 +239,11 @@ const styles = StyleSheet.create({
 
   desc: {
     textAlign: "center",
-    marginTop: 10,
+    marginTop: 20,
     color: "#4E3321",
   },
 
-  section: { paddingHorizontal: 15, marginTop: 20 },
+  section: { paddingHorizontal: 15, marginTop: 25 },
 
   bigTitle: { fontSize: 28, fontWeight: "bold" },
 
@@ -204,6 +252,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignItems: "center",
     paddingBottom: 15,
+    marginTop: 25,
   },
 
   startBtn: {
@@ -219,14 +268,14 @@ const styles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "bold",
     marginLeft: 15,
-    marginTop: 15,
+    marginTop: 30,
   },
 
   cardRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 15,
-    marginTop: 10,
+    marginTop: 30,
   },
 
   card: {
@@ -269,4 +318,55 @@ const styles = StyleSheet.create({
   navText: { fontSize: 10, color: "#7B5F4C" },
 
   navActive: { fontSize: 10, color: "#F48BA1", fontWeight: "bold" },
+
+  row: {
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+  marginHorizontal: 16,
+  marginTop: 10,
+},
+
+headerCenter: {
+  flex: 1,
+  alignItems: "center",
+  justifyContent: "center",
+},
+
+image: {
+  width: 39,
+  height: 39,
+  borderRadius: 999,
+},
+
+text: {
+  color: "#9E9E9E",
+  fontSize: 10,
+  fontWeight: "bold",
+  marginBottom: 2,
+  textAlign: "center",
+},
+
+text2: {
+  color: "#424242",
+  fontSize: 14,
+  fontWeight: "bold",
+  textAlign: "center",
+},
+button: {
+		flex: 1,
+		alignItems: "center",
+		backgroundColor: "#F7F4F2",
+		borderRadius: 128,
+		paddingVertical: 6,
+		marginRight: 12,
+	},
+button2: {
+		backgroundColor: "#F48BA1",
+		borderRadius: 128,
+		paddingVertical: 6,
+		paddingHorizontal: 16,
+		marginRight: 12,
+	},
+
 });

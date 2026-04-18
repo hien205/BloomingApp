@@ -15,7 +15,7 @@ const minutes = Array.from({ length: 60 }, (_, i) => i);
 const periods = ["AM", "PM"];
 const daysOfWeek = ["SU", "M", "T", "W", "TH", "F", "S"];
 
-export default function App() {
+export default function CalmScreen() {
   const router = useRouter();
   const [hour, setHour] = useState(11);
   const [minute, setMinute] = useState(30);
@@ -69,6 +69,7 @@ export default function App() {
   };
 
   return (
+    
     <SafeAreaView style={styles.container}>
 
       <Text style={styles.title}>
